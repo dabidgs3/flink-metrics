@@ -1,0 +1,364 @@
+Samza.- streaming API, manage concepts for paralellism and its units
+        Tasks and partitions. Graphs: edge - job | node - stream
+
+http://samza.apache.org/learn/documentation/0.9/introduction/architecture.html
+
+Kafka.- Queuing system defining topics for a stream partition
+
+YARN.- Yet Another Resource Negotiator
+	Next generation Hadoop resource scheduler. Allows to create
+       http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html
+
+    When an application interacts with YARN, it looks something like this:
+
+    Application: I want to run command X on two machines with 512MB memory.
+    YARN: Cool, where’s your code?
+    Application: http://path.to.host/jobs/download/my.tgz
+    YARN: I’m running your job on node-1.grid and node-2.grid.
+
+Flink, Rich function: https://ci.apache.org/projects/flink/flink-docs-release-1.1/apis/common/index.html#rich-functions
+
+Flink Scope definition in configuration file yaml
+https://ci.apache.org/projects/flink/flink-docs-release-1.1/apis/metrics.html
+
+Main concepts and architecture
+https://ci.apache.org/projects/flink/flink-docs-release-1.1/concepts/concepts.html
+
+ToDO: create tmux script for flink
+
+Default config(myflink)
+localhost:8081
+
+
+Commands:
+--run mini Flink job - maven
+mvn clean package
+mvn -e -X exec:java -Dexec.mainClass="berlin.bbdc.inet.wordcountMetrics.WikipediaAnalysis"
+
+
+--run local flink - testing configuration
+bin/flink run -c "berlin.bbdc.inet.wordcountMetrics.WikipediaAnalysis" /home/dgu/developer/flink-metrics/wordcountMetrics/target/wordcountMetrics-0.1.jar
+
+bin/flink run -c "berlin.bbdc.inet.wordcountMetrics.WordCount" /home/dgu/developer/flink-metrics/wordcountMetrics/target/wordcountMetrics-0.1.jar
+
+#Running Metrics
+Parallelism set to 2 for WikiAnalysis
+Set to 1 for WordCount
+
+#JMX Reporter instantiated from config file /conf/flink-config.yaml
+Set scope to jobmanager
+Set JMX Class to new JMXReporter
+There is another System JMXReporter
+
+show in console
+
+#JMX Tutorial
+https://docs.oracle.com/javase/tutorial/jmx/remote/index.html
+#JMX Docs Java
+http://docs.oracle.com/javase/6/docs/jdk/api/attach/spec/index.html
+http://docs.oracle.com/javase/6/docs/api/java/lang/management/package-summary.html
+
+Project in Github
+https://github.com/romix/JMX-server-monitoring/blob/master/src/main/java/org/romix/monitoring/JmxServerMonitoring.java
+
+#graphite pitch
+https://www.youtube.com/watch?v=8yErya52xTw
+
+#graphite
+https://graphiteapp.org/quick-start-guides/synthesize.html
+#installation vagrant
+$ wget https://github.com/obfuscurity/synthesize/archive/master.zip
+$ unzip master.zip
+$ cd synthesize-master/
+$ vagrant plugin install vagrant-vbguest
+$ vagrant up
+$ open https://127.0.0.1:8443/
+
+#prerequisites
+virtualbox
+
+#vagrant
+https://en.wikipedia.org/wiki/Vagrant_(software)
+previous installation for vagrant - SUPPORT ubuntu 16
+
+#ruby gems for developer mode
+sudo apt-get install ruby-dev
+
+#synthesize - master with vagrant
+$ wget https://github.com/obfuscurity/synthesize/archive/master.zip
+$ unzip master.zip
+$ cd synthesize-master/
+$ vagrant plugin install vagrant-vbguest
+$ vagrant up
+$ open https://127.0.0.1:8443/
+
+#Synthesize SCRIPT
+https://github.com/obfuscurity/synthesize/blob/master/install
+
+#architecture for Graphite
+https://graphiteapp.org/#gettingStarted
+#carbon listener for flink in TCP port 8443
+not supported in ubuntu 16 due to headers for ruby
+prepared a virtual environment with vargrant and virtualbox flavor
+
+#Graphite
+http://www.programcreek.com/java-api-examples/index.php?api=com.codahale.metrics.graphite.GraphiteReporter
+#Graphite - Carbon - Source Code - useful for architecture
+https://github.com/graphite-project/carbon
+
+#Grafana Example
+http://docs.grafana.org/datasources/graphite/
+
+#Ganglia
+https://ci.apache.org/projects/flink/flink-docs-master/monitoring/metrics.html#ganglia-orgapacheflinkmetricsgangliagangliareporter
+
+#JMXTrans for graphite -
+https://github.com/jmxtrans/jmxtrans
+
+#source for JMXTrans
+http://central.maven.org/maven2/org/jmxtrans/jmxtrans/
+
+#JMX transformer
+The application is installed in: /usr/share/jmxtrans
+Configuration options are stored in: /etc/default/jmxtrans
+There is an init script in: /etc/init.d/jmxtrans (this wraps the jmxtrans.sh discussed below)
+Put your .json files into: /var/lib/jmxtrans
+Presetting the memory: echo "jmxtrans jmxtrans/jvm_heap_size string 256" | sudo debconf-set-selections
+
+#Graphite PREREQUISITES
+a UNIX-like Operating System
+Python 2.7 or greater but NOT Python 3
+cairocffi
+Django 1.9
+django-tagging 0.4.3
+pytz
+fontconfig and at least one font package (a system package usually)
+A WSGI server and web server. Popular choices are:
+Apache with mod_wsgi
+gunicorn with nginx
+uWSGI with nginx
+
+#Commands
+sudo pip install cairocffi
+sudo pip install Django==1.10.4
+sudo pip install django-tagging==0.3
+sudo pip install pytz
+sudo apt install apache2
+sudo apt install apache2-dev
+sudo pip install mod_wsgi
+#webapp configuration - modify webapp graphite local+setting.py
+#apache 2 config
+/home/dgu/developer/graphite/graphite-web/examples
+for django 2
+#important
+sudo apt install libapache2-mod-wsgi
+#ref: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-graphite-on-an-ubuntu-14-04-server
+
+#edit /opt/graphite/conf/graphite.wsgi
+#disable default site
+sudo a2dissite 000-default
+sudo pip install whitenoise
+#django for config files
+django-admin /etc/apache2/conf-available/graphite-vhost.conf
+#DB
+sudo chown nobody:nobody /opt/graphite/storage/graphite.db
+#GRANTING
+sudo chmod 777 /opt/graphite/storage/log/webapp/
+#IN THE END
+sudo apt install graphite-web
+sudo apt install graphte-carbon
+#the last two lines not valid - uninstalled after
+sudo apt-get install postgresql libpq-dev python-psycopg2
+
+
+#22DEC
+ sudo python setup.py install
+/usr/lib/python2.7/distutils/dist.py:267: UserWarning: Unknown distribution option: 'install_requires'
+  warnings.warn(msg)
+running install
+running build
+running build_py
+copying webapp/graphite/local_settings.py -> build/lib.linux-x86_64-2.7/graphite
+copying webapp/graphite/local_settings.py.example -> build/lib.linux-x86_64-2.7/graphite
+running build_scripts
+running install_lib
+copying build/lib.linux-x86_64-2.7/graphite/local_settings.py.example -> /opt/graphite/webapp/graphite
+running install_scripts
+changing mode of /opt/graphite/bin/build-index to 755
+changing mode of /opt/graphite/bin/run-graphite-devel-server.py to 755
+changing mode of /opt/graphite/bin/build-index.sh to 755
+running install_data
+running install_egg_info
+Removing /opt/graphite/webapp/graphite_web-0.10.0_rc1-py2.7.egg-info
+Writing /opt/graphite/webapp/graphite_web-0.10.0_rc1-py2.7.egg-info
+
+
+
+#Virtual environment
+dgu@dgu:~/developer/graphite/graphite-web/webapp$ python manage.py migrate
+Could not import graphite.local_settings, using defaults!
+/home/dgu/developer/graphite/graphite-web/webapp/graphite/settings.py:249: UserWarning: SECRET_KEY is set to an unsafe default. This should be set in local_settings.py for better security
+  warn('SECRET_KEY is set to an unsafe default. This should be set in local_settings.py for better security')
+Operations to perform:
+  Apply all migrations: admin, contenttypes, tagging, auth, sessions
+Running migrations:
+  Rendering model states... DONE
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying sessions.0001_initial... OK
+  Applying tagging.0001_initial... OK
+  Applying tagging.0002_on_delete... OK
+
+
+#IMPORTANT
+sudo pip install django-tagging==0.3
+https://gist.github.com/relaxdiego/7539911
+
+#Configure CARBO
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-graphite-on-an-ubuntu-14-04-server
+
+#DataArtisans - FLink
+http://events.linuxfoundation.org/sites/events/files/slides/ACEU15-FlinkArchv3.pdf
+
+#commands
+sudo /etc/init.d/jmxtrans stop /var/lib/jmxtrans/flink.conf
+
+#commands
+tail -f /var/log/jmxtrans/jmxtrans.log
+
+#06JAN
+cd /opt/graphite/conf/
+cp storage-aggregation.conf{.example,}
+
+#09JAN
+Stopping jobmanager daemon (pid: 32758) on host dgu.
+dgu@dgu:~/developer/flink/flink-dist/target/flink-1.2-SNAPSHOT-bin/flink-1.2-SNAPSHOT/bin$ cd ..
+dgu@dgu:~/developer/flink/flink-dist/target/flink-1.2-SNAPSHOT-bin/flink-1.2-SNAPSHOT$ bin/start-local.sh
+Starting jobmanager daemon on host dgu.
+dgu@dgu:~/developer/flink/flink-dist/target/flink-1.2-SNAPSHOT-bin/flink-1.2-SNAPSHOT$
+
+
+
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO]
+[INFO] JmxTrans - parent project .......................... SUCCESS [  9.685 s]
+[INFO] JmxTrans - test utils .............................. SUCCESS [ 25.918 s]
+[INFO] JmxTrans - utils ................................... FAILURE [  4.551 s]
+[INFO] JmxTrans - Core .................................... SKIPPED
+[INFO] jmxtrans - output writers .......................... SKIPPED
+[INFO] JmxTrans - CloudWatch output writers ............... SKIPPED
+[INFO] JmxTrans - Core output writers ..................... SKIPPED
+[INFO] JmxTrans - ElasticSearch output writers ............ SKIPPED
+[INFO] JmxTrans - Ganglia output writers .................. SKIPPED
+[INFO] JmxTrans - InfluxDB output writers ................. SKIPPED
+[INFO] JmxTrans - JRobin output writers ................... SKIPPED
+[INFO] JmxTrans - Kafka output writers .................... SKIPPED
+[INFO] JmxTrans - log4j output writers .................... SKIPPED
+[INFO] JmxTrans - Velocity output writers ................. SKIPPED
+[INFO] JmxTrans ........................................... SKIPPED
+[INFO] jmxtrans-docker-test ............................... SKIPPED
+[INFO] JmxTrans - Examples ................................ SKIPPED
+[INFO] JmxTrans - packaging ............................... SKIPPED
+[INFO] JmxTrans - systemd packaging ....................... SKIPPED
+
+
+Commands DEBUG
+ sudo python /opt/graphite/bin/carbon-cache.py start
+ sudo /etc/init.d/jmxtrans restart /var/lib/jmxtrans/flink.json
+cd /usr/share/jmxtrans/logs
+tail -f jmxtrans.log
+cd /opt/graphite/bin
+sudo python run-graphite-devel-server.py /opt/graphite/
+###STOP
+ sudo python /opt/graphite/bin/carbon-cache.py stop
+
+
+
+#######FORMATTING
+MBean: org.apache.flink.taskmanager.Status.JVM.CPU.Load:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=0.0\n\n}\n
+*******
+MBean: java.lang:type=Compilation\n{\n   # CompilationTimeMonitoringSupported\n   CompilationTimeMonitoringSupported=true\n\n   # TotalCompilationTime\n   TotalCompilationTime=58333\n\n   # Name\n   Name=HotSpot 64-Bit Tiered Compilers\n\n   # ObjectName\n   ObjectName=java.lang:type=Compilation\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.Memory.direct.Count:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=5\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.Memory.NonHeap.Used:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=47368664\n\n}\n
+*******
+MBean: org.apache.flink.taskmanager.Status.JVM.Memory.mapped.Count:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=0\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.Memory.NonHeap.Committed:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=48627712\n\n}\n
+*******
+MBean: java.util.logging:type=Logging\n{\n   # ObjectName\n   ObjectName=java.util.logging:type=Logging\n\n   # LoggerNames\n   LoggerNames[0]=sun.rmi.client.call\n   LoggerNames[1]=javax.management.snmp.daemon\n   LoggerNames[2]=javax.management.remote.rmi\n   LoggerNames[3]=sun.rmi.server.call\n   LoggerNames[4]=javax.management.notification\n   LoggerNames[5]=sun.rmi.transport.tcp\n   LoggerNames[6]=javax.management.remote.timeout\n   LoggerNames[7]=sun.rmi.transport.tcp.proxy\n   LoggerNames[8]=javax.management.remote.misc\n   LoggerNames[9]=javax.management.misc\n   LoggerNames[10]=javax.management\n   LoggerNames[11]=javax.management.relation\n   LoggerNames[12]=sun.rmi.client.ref\n   LoggerNames[13]=org.apache.flink.shaded.com.google.common.cache.LocalCache\n   LoggerNames[14]=sun.rmi.dgc\n   LoggerNames[15]=sun.rmi.transport.misc\n   LoggerNames[16]=global\n   LoggerNames[17]=org.apache.flink.hadoop.shaded.com.google.common.collect.MapMakerInternalMap\n   LoggerNames[18]=sun.rmi.loader\n   LoggerNames[19]=sun.rmi.runtime\n   LoggerNames[20]=sun.rmi.server.ref\n   LoggerNames[21]=javax.management.snmp\n   LoggerNames[22]=sun.management.jmxremote\n   LoggerNames[23]=org.jboss.netty.util.internal.SystemPropertyUtil\n   LoggerNames[24]=javax.management.mbeanserver\n   LoggerNames[25]=javax.management.modelmbean\n   LoggerNames[26]=javax.management.mlet\n   LoggerNames[27]=javax.management.timer\n   LoggerNames[28]=org.apache.flink.shaded.com.google.common.cache.CacheBuilder\n   LoggerNames[29]=\n   LoggerNames[30]=javax.management.monitor\n\n}\n
+*******
+MBean: java.lang:type=MemoryManager,name=Metaspace Manager\n{\n   # Valid\n   Valid=true\n\n   # MemoryPoolNames\n   MemoryPoolNames[0]=Metaspace\n   MemoryPoolNames[1]=Compressed Class Space\n\n   # Name\n   Name=Metaspace Manager\n\n   # ObjectName\n   ObjectName=java.lang:type=MemoryManager,name=Metaspace Manager\n\n}\n
+*******
+MBean: org.apache.flink.taskmanager.Status.JVM.ClassLoader.ClassesUnloaded:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=161\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.GarbageCollector.PS_Scavenge.Time:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=183\n\n}\n
+*******
+MBean: org.apache.flink.taskmanager.Status.JVM.Memory.direct.Count:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=5\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.Memory.mapped.MemoryUsed:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=0\n\n}\n
+*******
+MBean: org.apache.flink.taskmanager.Status.JVM.Memory.Heap.Max:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=751828992\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.GarbageCollector.PS_Scavenge.Count:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=13\n\n}\n
+*******
+MBean: org.apache.flink.taskmanager.Status.JVM.Threads.Count:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=43\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.Memory.Heap.Max:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=751828992\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.CPU.Time:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=184980000000\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.Status.JVM.Memory.direct.MemoryUsed:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=262145\n\n}\n
+*******
+MBean: java.lang:type=MemoryPool,name=Compressed Class Space\n{\n   # Valid\n   Valid=true\n\n   # Usage\n   Usage=CompositeData(java.lang.management.MemoryUsage)\n   {\n    Usage.committed=4718592\n    Usage.init=0\n    Usage.max=1073741824\n    Usage.used=4548616\n   }\n\n   # PeakUsage\n   PeakUsage=CompositeData(java.lang.management.MemoryUsage)\n   {\n    PeakUsage.committed=4718592\n    PeakUsage.init=0\n    PeakUsage.max=1073741824\n    PeakUsage.used=4548616\n   }\n\n   # MemoryManagerNames\n   MemoryManagerNames[0]=Metaspace Manager\n\n   # UsageThreshold\n   UsageThreshold=0\n\n   # UsageThresholdExceeded\n   UsageThresholdExceeded=false\n\n   # UsageThresholdCount\n   UsageThresholdCount=0\n\n   # UsageThresholdSupported\n   UsageThresholdSupported=true\n\n   # CollectionUsageThreshold\n   CollectionUsageThreshold=javax.management.RuntimeMBeanException: java.lang.UnsupportedOperationException: CollectionUsage threshold is not supported\n\n   # CollectionUsageThresholdExceeded\n   CollectionUsageThresholdExceeded=javax.management.RuntimeMBeanException: java.lang.UnsupportedOperationException: CollectionUsage threshold is not supported\n\n   # CollectionUsageThresholdCount\n   CollectionUsageThresholdCount=javax.management.RuntimeMBeanException: java.lang.UnsupportedOperationException: CollectionUsage threshold is not supported\n\n   # CollectionUsage\n   CollectionUsage=null\n\n   # CollectionUsageThresholdSupported\n   CollectionUsageThresholdSupported=false\n\n   # Name\n   Name=Compressed Class Space\n\n   # Type\n   Type=NON_HEAP\n\n   # ObjectName\n   ObjectName=java.lang:type=MemoryPool,name=Compressed Class Space\n\n}\n
+*******
+MBean: java.lang:type=Memory\n{\n   # Verbose\n   Verbose=false\n\n   # ObjectPendingFinalizationCount\n   ObjectPendingFinalizationCount=0\n\n   # HeapMemoryUsage\n   HeapMemoryUsage=CompositeData(java.lang.management.MemoryUsage)\n   {\n    HeapMemoryUsage.committed=751828992\n    HeapMemoryUsage.init=805306368\n    HeapMemoryUsage.max=751828992\n    HeapMemoryUsage.used=223713264\n   }\n\n   # NonHeapMemoryUsage\n   NonHeapMemoryUsage=CompositeData(java.lang.management.MemoryUsage)\n   {\n    NonHeapMemoryUsage.committed=48627712\n    NonHeapMemoryUsage.init=2555904\n    NonHeapMemoryUsage.max=-1\n    NonHeapMemoryUsage.used=47368664\n   }\n\n   # ObjectName\n   ObjectName=java.lang:type=Memory\n\n}\n
+*******
+MBean: org.apache.flink.taskmanager.Status.JVM.Memory.Heap.Used:host=localhost,tm_id=076b9b0d66575e82106b9e59aca3c342\n{\n   # Attribute exposed for management\n   Value=223713264\n\n}\n
+*******
+MBean: org.apache.flink.jobmanager.numRunningJobs:host=127.0.0.1\n{\n   # Attribute exposed for management\n   Value=0\n\n}\n
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###########################################################
+CustomReporter - Implementing
+http://metrics.dropwizard.io/3.1.0/manual/core/
+
+
+
+
+
+################################################################
+running project
+mvn clean install
+mvn -e -X exec:java -Dexec.mainClass="berlin.bbdc.inet.flinkjmx.JmxTransformer" -Dexec.args="-j /var/lib/jmxtrans/ -e -s 3"

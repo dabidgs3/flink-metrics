@@ -1,0 +1,17 @@
+{
+  "servers" : [ {
+    "port" : "9012",
+    "host" : "localhost",
+    "queries" : [ {
+      "obj" : "org.apache.*:*",
+      "outputWriters" : [ {
+        "@class" : "berlin.bbdc.inet.flinkjmx.output.FileWriter",
+        "filepath" : "/home/dgu/developer/flink-metrics/wordcountMetrics/result.out"
+      },{
+        "@class" : "berlin.bbdc.inet.flinkjmx.output.GraphiteWriterFactory",
+        "port" : 2003,
+        "host" : "localhost"
+      } ]
+    } ]
+  } ]
+}

@@ -1,0 +1,87 @@
+/**
+ * The MIT License
+ * Copyright © 2010 JmxTrans team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package berlin.bbdc.inet.flinkjmx.monitoring;
+
+import berlin.bbdc.inet.flinkjmx.exceptions.LifecycleException;
+
+/**
+ * The Interface ManagedJmxTransformerProcessMBean.
+ */
+public interface ManagedJmxTransformerProcessMXBean {
+	
+	/**
+	 * Start the JmxProcess.
+	 *
+	 * @throws LifecycleException the lifecycle exception
+	 */
+	void start() throws LifecycleException;
+	
+	/**
+	 * Stop the JmxProcess.
+	 *
+	 * @throws LifecycleException the lifecycle exception
+	 */
+	void stop() throws LifecycleException;
+	
+	/**
+	 * Gets the quart properties file.
+	 *
+	 * @return the quart properties file
+	 */
+	String getQuartPropertiesFile();
+	
+	/**
+	 * Sets the quart properties file.
+	 *
+	 * @param quartPropertiesFile the quart properties file
+	 */
+	void setQuartPropertiesFile(String quartPropertiesFile);
+	
+	/**
+	 * Gets the run period.
+	 *
+	 * @return the run period
+	 */
+	int getRunPeriod();
+	
+	/**
+	 * Sets the run period.
+	 *
+	 * @param runPeriod the run period
+	 */
+	void setRunPeriod(int runPeriod);
+	
+	/**
+	 * Sets the json dir or file.
+	 *
+	 * @param jsonDirOrFile the json dir or file
+	 */
+	void setJsonDirOrFile(String jsonDirOrFile);
+	
+	/**
+	 * Gets the json dir or file.
+	 *
+	 * @return the json dir or file
+	 */
+	String getJsonDirOrFile();
+}

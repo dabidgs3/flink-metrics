@@ -1,0 +1,34 @@
+{
+  "servers" : [ {
+    "port" : "9011",
+    "host" : "localhost",
+    "queries" : [ {
+      "obj" : "org.apache.flink.jobmanager.Status.JVM.CPU.Load:host=127.0.0.1",
+      "resultAlias": "flink-jm",
+      "attr" : [ "Value" ],
+      "outputWriters" : [ {
+        "@class" : "com.googlecode.jmxtrans.model.output.GraphiteWriterFactory",
+          "port" : 2003,
+          "host" : "localhost"
+      } ]
+    }, {
+      "obj" : "org.apache.flink.taskmanager.Status.JVM.CPU.Load:host=localhost,tm_id=717c7afcf684f5eb600026c9bdc81ac1",
+      "resultAlias": "flink-tm",
+      "attr" : [ "Value" ],
+      "outputWriters" : [ {
+        "@class" : "com.googlecode.jmxtrans.model.output.GraphiteWriterFactory",
+          "port" : 2003,
+          "host" : "localhost"
+      } ]
+    }, {
+      "obj" : "org.apache.flink.taskmanager.Status.JVM.Memory.Heap.Used:host=localhost,tm_id=717c7afcf684f5eb600026c9bdc81ac1",
+      "resultAlias": "flink-tm-mem",
+      "attr" : [ "Value" ],
+      "outputWriters" : [ {
+        "@class" : "com.googlecode.jmxtrans.model.output.GraphiteWriterFactory",
+          "port" : 2003,
+          "host" : "localhost"
+      } ]
+    } ]
+  } ]
+}
